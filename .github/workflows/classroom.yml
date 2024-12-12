@@ -42,7 +42,7 @@ jobs:
         input: '17'
         expected-output: |-
           0 1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16 17
-          1
+          2
         comparison-method: exact
         timeout: 10
         max-score: 20
@@ -77,7 +77,7 @@ jobs:
         input: '9'
         expected-output: |-
           0 1 2 Fizz 4 Buzz Fizz 7 8 Fizz
-          1
+          2
         comparison-method: exact
         timeout: 10
         max-score: 10
