@@ -1,0 +1,92 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Variasi
+      id: variasi
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Variasi
+        setup-command: javac Nomor2.java
+        command: java Nomor2
+        input: |-
+          3
+          Y
+          4
+          N
+        expected-output: |-
+          Total voucher belanja : 100000
+          Total yang harus dibayar : 595000
+          3
+        comparison-method: exact
+        timeout: 10
+        max-score: 40
+    - name: Angka 17
+      id: angka-17
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Angka 17
+        setup-command: javac Nomor1.java
+        command: java Nomor1
+        input: '17'
+        expected-output: |-
+          0 1 2 Fizz 4 Buzz Fizz 7 8 Fizz Buzz 11 Fizz 13 14 FizzBuzz 16 17
+          1
+        comparison-method: exact
+        timeout: 10
+        max-score: 20
+    - name: Sesuai Soal
+      id: sesuai-soal
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Sesuai Soal
+        setup-command: javac Nomor2.java
+        command: java Nomor2
+        input: |-
+          1
+          Y
+          2
+          Y
+          4
+          N
+        expected-output: |-
+          Total voucher belanja : 150000
+          Total yang harus dibayar : 895000
+          3
+        comparison-method: exact
+        timeout: 10
+        max-score: 40
+    - name: Angka 9
+      id: angka-9
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Angka 9
+        setup-command: javac Nomor1.java
+        command: java Nomor1
+        input: '9'
+        expected-output: |-
+          0 1 2 Fizz 4 Buzz Fizz 7 8 Fizz
+          1
+        comparison-method: exact
+        timeout: 10
+        max-score: 10
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        VARIASI_RESULTS: "${{steps.variasi.outputs.result}}"
+        ANGKA-17_RESULTS: "${{steps.angka-17.outputs.result}}"
+        SESUAI-SOAL_RESULTS: "${{steps.sesuai-soal.outputs.result}}"
+        ANGKA-9_RESULTS: "${{steps.angka-9.outputs.result}}"
+      with:
+        runners: variasi,angka-17,sesuai-soal,angka-9
